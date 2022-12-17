@@ -1,35 +1,55 @@
 import socket
+from _thread import *
+import sys
+
+server = socket.gethostname()
+port = 5555
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+try:
+    s.bind((server, port))
+except socket.error as e:
+    str(e)
+
+s.listen(2)
+print("Waiting for a connection, Server Started")
+
+score = [2, 3]
 
 
-def server_program():
-    # get the hostname
-    host = socket.gethostname()
-    port = 5000  # initiate port no above 1024
-
-    server_socket = socket.socket()  # get instance
-    # look closely. The bind() function takes tuple as argument
-    server_socket.bind((host, port))  # bind host address and port together
-
-    # configure how many client the server can listen simultaneously
-    server_socket.listen(2)
-    conn, address = server_socket.accept()  # accept new connection
-    print("Connection from: " + str(address))
-    conn1, address1 = server_socket.accept()  # accept new connection
-    print("Connection from: " + str(address1))
+def threaded_client(conn, player):
+    conn.send(str.encode(str(score[player])))
+    reply = ""
     while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
-        data = conn.recv(1024).decode()
-        data1 = conn1.recv(1024).decode()
-        if not data:
-            # if data is not received break
-            break
-        print("from connected user: " + str(data))
-        print("from connected user: " + str(data1))
-        #data = input(' -> ')
-        conn.send(data1.encode())  # send data to the client
-        conn1.send(data.encode())
-    conn.close()  # close the connection
-    conn1.close()
+        try:
+            data = conn.recv(2048).decode()
+            score[player] = data
 
-if __name__ == '__main__':
-    server_program()
+            if not data:
+                print("Disconnected")
+                break
+            else:
+                if player == 1:
+                    reply = score[0]
+                else:
+                    reply = score[1]
+
+                print("Received: ", data)
+                print("Sending : ", reply)
+
+            conn.sendall(str.encode(str(reply)))
+        except:
+            break
+
+    print("Lost connection")
+    conn.close()
+
+
+currentPlayer = 0
+while True:
+    conn, addr = s.accept()
+    print("Connected to:", addr)
+
+    start_new_thread(threaded_client, (conn, currentPlayer))
+    currentPlayer += 1

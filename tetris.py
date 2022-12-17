@@ -46,16 +46,17 @@ class Tetris:
     zoom = 20
     figure = None
 
-    def __init__(self, height, width):
-        self.height = height
-        self.width = width
+    def __init__(self, id):
+        self.id = id
+        self.height = 20
+        self.width = 10
         self.field = []
         self.score = 0
         self.state = "start"
         self.ready = False
-        for i in range(height):
+        for i in range(self.height):
             new_line = []
-            for j in range(width):
+            for j in range(self.width):
                 new_line.append(0)
             self.field.append(new_line)
 
@@ -122,8 +123,13 @@ class Tetris:
         if self.intersects():
             self.figure.rotation = old_rotation
 
+    def get_score(self):
+        return self.score
+    def update(self):
+        self.score_op
 
 # Initialize the game engine
+'''
 pygame.init()
 size = (400, 460)
 screen = pygame.display.set_mode(size)
@@ -134,7 +140,7 @@ pygame.display.set_caption("Tetris")
 done = False
 clock = pygame.time.Clock()
 fps = 25
-game = Tetris(20, 10)
+game = Tetris(1)
 counter = 0
 
 pressing_down = False
@@ -216,3 +222,4 @@ while not done:
     clock.tick(fps)
 
 pygame.quit()
+'''
