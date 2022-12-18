@@ -21,6 +21,8 @@ def main():
     pressing_down = False
     pygame.init()
     while not done:
+        if not n.send(game.score):
+            break
         score3 = int(n.send(game.score))
         game.score_op = score3
         if game.figure is None:
@@ -98,6 +100,30 @@ def main():
 
         pygame.display.flip()
         clock.tick(fps)
+    #pygame.quit()
 
 
-main()
+def menu_screen():
+    run = True
+    clock = pygame.time.Clock()
+    pygame.init()
+    while run:
+        clock.tick(60)
+        screen.fill((30, 30, 30))
+        font = pygame.font.SysFont("Calibri", 60)
+        text = font.render("Click to Play!", 1, (255,0,0))
+        screen.blit(text, (50,200))
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                run = False
+
+    main()
+
+
+while True:
+    menu_screen()
