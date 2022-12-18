@@ -15,7 +15,7 @@ except socket.error as e:
 s.listen(2)
 print("Waiting for a connection, Server Started")
 
-score = [2, 3]
+score = [0, 0]
 
 
 def threaded_client(conn, player):
@@ -24,7 +24,7 @@ def threaded_client(conn, player):
     while True:
         try:
             data = conn.recv(2048).decode()
-            score[player] = data
+            score[player] = int(data)
 
             if not data:
                 print("Disconnected")
@@ -37,10 +37,7 @@ def threaded_client(conn, player):
 
                 print("Received: ", data)
                 print("Sending : ", reply)
-
-                if not reply:
-                    break
-                conn.sendall(str.encode(str(reply)))
+            conn.sendall(str.encode(str(reply)))
         except:
             break
 
