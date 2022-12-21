@@ -1,7 +1,7 @@
 import socket, pickle
 from _thread import *
 import sys
-from game import Tetris
+from tetris import Tetris
 server = socket.gethostname()
 port = 5555
 

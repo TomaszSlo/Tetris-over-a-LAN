@@ -1,6 +1,6 @@
 import pygame
 from network import Network
-from game import Tetris, colors
+from tetris import Tetris, colors
 
 width = 400
 height = 460
