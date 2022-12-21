@@ -1,6 +1,6 @@
 import pygame
 from network import Network
-from tetris import Tetris, colors
+from game import Tetris, colors
 
 width = 400
 height = 460
@@ -14,15 +14,16 @@ def main():
     done = False
     fps = 25
     counter = 0
+
     n = Network()
-    startScore = int(n.getScore())
-    game = Tetris(1)
+    game = n.getP()
     clock = pygame.time.Clock()
+
     pressing_down = False
     pygame.init()
     while not done:
-        score3 = int(n.send(game.score))
-        game.score_op = score3
+        p2 = n.send(game)
+
         if game.figure is None:
             game.new_figure()
         counter += 1
@@ -81,7 +82,7 @@ def main():
         score1_text = font.render("Your Score: ", True, (128, 255, 128))
         score2_text = font.render("Opponent Score: ", True, (255, 77, 77))
         score1 = font.render(str(game.score), True, (128, 255, 128))
-        score2 = font.render(str(game.score_op), True, (255, 77, 77))
+        score2 = font.render(str(p2.score), True, (255, 77, 77))
 
         text_game_over = font1.render("Game Over", True, (255, 125, 0))
         text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
