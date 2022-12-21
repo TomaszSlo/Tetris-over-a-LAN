@@ -24,6 +24,14 @@ def main():
     while not done:
         p2 = n.send(game)
 
+        if not p2.connected():
+            screen.fill((30, 30, 30))
+            font = pygame.font.SysFont("Calibri", 40)
+            text = font.render("Wait for a player!", 1, (255,0,0))
+            screen.blit(text, (50, 200))
+            pygame.display.update()
+            continue
+
         if game.figure is None:
             game.new_figure()
         counter += 1
@@ -99,7 +107,8 @@ def main():
 
         pygame.display.flip()
         clock.tick(fps)
-    #pygame.quit()
+        #pygame.quit()
+
 
 
 def menu_screen():

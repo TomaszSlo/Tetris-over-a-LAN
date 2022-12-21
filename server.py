@@ -22,6 +22,7 @@ def threaded_client(conn, player):
     conn.send(pickle.dumps(players[player]))
     reply = ""
     while True:
+
         try:
             data = pickle.loads(conn.recv(2048))
             players[player] = data
@@ -35,9 +36,9 @@ def threaded_client(conn, player):
                 else:
                     reply = players[1]
 
-                print("Received: ", data)
-                print("Sending : ", reply)
-            conn.sendall(pickle.dumps(reply))
+                #print("Received: ", data)
+                #print("Sending : ", reply)
+                conn.sendall(pickle.dumps(reply))
         except:
             break
 
@@ -49,6 +50,6 @@ currentPlayer = 0
 while True:
     conn, addr = s.accept()
     print("Connected to:", addr)
-
+    players[currentPlayer].ready = True
     start_new_thread(threaded_client, (conn, currentPlayer))
     currentPlayer += 1
