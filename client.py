@@ -93,7 +93,11 @@ def main():
         score2 = font.render(str(p2.score), True, (255, 77, 77))
 
         text_game_over = font1.render("Game Over", True, (255, 125, 0))
-        text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
+        text_game_over1 = font.render("Press ESC", True, (255, 0, 0))
+        text_game_over2 = font.render("Wait for a opponent!", True, (255, 0, 0))
+        text_win = font1.render("You WIN!", True, (128, 255, 128))
+        text_lose = font1.render("You LOSE!", True, (255, 0, 0))
+        text_draw = font1.render("Draw!", True, (255, 125, 0))
 
         screen.blit(tetris_text, [25, 0])
         screen.blit(score1_text, [220, 350])
@@ -102,8 +106,48 @@ def main():
         screen.blit(score2, [220, 422])
 
         if game.state == "gameover":
-            screen.blit(text_game_over, [20, 200])
-            screen.blit(text_game_over1, [25, 265])
+            if p2.state != "gameover":
+                screen.fill((30, 30, 30))
+                screen.blit(text_game_over, (60, 200))
+                screen.blit(text_game_over2, (100, 250))
+
+                screen.blit(score1_text, [220, 350])
+                screen.blit(score2_text, [220, 400])
+                screen.blit(score1, [220, 372])
+                screen.blit(score2, [220, 422])
+                pygame.display.update()
+
+            if p2.state == "gameover":
+                if game.get_score() > p2.get_score():
+                    screen.fill((30, 30, 30))
+                    screen.blit(text_win, (80, 180))
+                    screen.blit(text_game_over1, (150, 230))
+
+                    screen.blit(score1_text, [220, 350])
+                    screen.blit(score2_text, [220, 400])
+                    screen.blit(score1, [220, 372])
+                    screen.blit(score2, [220, 422])
+                    pygame.display.update()
+                elif game.get_score() < p2.get_score():
+                    screen.fill((30, 30, 30))
+                    screen.blit(text_lose, (70, 180))
+                    screen.blit(text_game_over1, (150, 230))
+
+                    screen.blit(score1_text, [220, 350])
+                    screen.blit(score2_text, [220, 400])
+                    screen.blit(score1, [220, 372])
+                    screen.blit(score2, [220, 422])
+                    pygame.display.update()
+                else:
+                    screen.fill((30, 30, 30))
+                    screen.blit(text_draw, (120, 180))
+                    screen.blit(text_game_over1, (150, 230))
+
+                    screen.blit(score1_text, [220, 350])
+                    screen.blit(score2_text, [220, 400])
+                    screen.blit(score1, [220, 372])
+                    screen.blit(score2, [220, 422])
+                    pygame.display.update()
 
         pygame.display.flip()
         clock.tick(fps)
